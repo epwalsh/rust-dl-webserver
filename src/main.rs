@@ -4,30 +4,10 @@ use rust_bert::pipelines::generation::{GPT2Generator, LanguageGenerator};
 use std::path::Path;
 use tch::{Cuda, Device};
 
-struct ModelContext {
-    model: GPT2Generator,
-}
-
-impl Default for ModelContext {
-    fn default() -> Self {
-        let device = Device::cuda_if_available();
-        Self {
-            model: GPT2Generator::new(
-                Path::new("/home/epwalsh/rustbert/gpt2/vocab.txt"),
-                Path::new("/home/epwalsh/rustbert/gpt2/merges.txt"),
-                Path::new("/home/epwalsh/rustbert/gpt2/config.json"),
-                Path::new("/home/epwalsh/rustbert/gpt2/model.ot"),
-                device,
-            )
-            .unwrap(),
-        }
-    }
-}
-
 async fn generate(context: String) -> String {
     let batched_generate = batched_fn! {
-        |batch: Vec<String>, ctx: &ModelContext| -> Vec<String> {
-            let output = ctx.model.generate(
+        handler = |batch: Vec<String>, model: &GPT2Generator| -> Vec<String> {
+            let output = model.generate(
                 Some(batch.iter().map(|c| &c[..]).collect()),
                 0,
                 30,
@@ -45,9 +25,23 @@ async fn generate(context: String) -> String {
             );
             println!("Processed batch of size {}", output.len());
             output
-        },
-        max_batch_size = 4,
-        delay = 50,
+        };
+        config = {
+            max_batch_size: 4,
+            delay: 50,
+        };
+        context = {
+            model: {
+                let device = Device::cuda_if_available();
+                GPT2Generator::new(
+                    Path::new("/home/epwalsh/rustbert/gpt2/vocab.txt"),
+                    Path::new("/home/epwalsh/rustbert/gpt2/merges.txt"),
+                    Path::new("/home/epwalsh/rustbert/gpt2/config.json"),
+                    Path::new("/home/epwalsh/rustbert/gpt2/model.ot"),
+                    device,
+                ).unwrap()
+            },
+        };
     };
     batched_generate(context).await
 }

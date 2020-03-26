@@ -75,9 +75,7 @@ checksum = "b41b7ea54a0c9d92199de89e20e58d49f02f8e699814ef3fdf266f6f748d15c7"
 
 [[package]]
 name = "batched-fn"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3e831cac4b546fc994743956dd8208fe98a8da90659a0cfb29af9de448aa152e"
+version = "0.1.3"
 dependencies = [
  "once_cell",
  "tokio",
