@@ -2,6 +2,12 @@
 # Cargo helpers.
 #
 
+.PHONY : run
+run :
+	LIBTORCH=/home/epwalsh/torch/libtorch \
+		LD_LIBRARY_PATH=/home/epwalsh/torch/libtorch/lib \
+		cargo run
+
 .PHONY : build
 build :
 	cargo build
