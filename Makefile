@@ -2,10 +2,13 @@
 # Cargo helpers.
 #
 
+LIBTORCH=$(shell realpath ~/torch/libtorch)
+LD_LIBRARY_PATH=$(LIBTORCH)/lib
+
 .PHONY : run
 run :
-	LIBTORCH=/home/epwalsh/torch/libtorch \
-		LD_LIBRARY_PATH=/home/epwalsh/torch/libtorch/lib \
+	LIBTORCH=$(LIBTORCH) \
+		LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) \
 		cargo run
 
 .PHONY : build
