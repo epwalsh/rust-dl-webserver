@@ -28,7 +28,7 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
         };
         context = {
             model: {
-                info!("Loading model");
+                info!("Loading model...");
                 let device = Device::cuda_if_available();
                 let generate_config = GenerateConfig {
                     max_length: 30,
@@ -39,14 +39,14 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
                     ..Default::default()
                 };
                 let model = GPT2Generator::new(
-                    Path::new("/home/epwalsh/rustbert/gpt2/vocab.txt"),
-                    Path::new("/home/epwalsh/rustbert/gpt2/merges.txt"),
-                    Path::new("/home/epwalsh/rustbert/gpt2/config.json"),
-                    Path::new("/home/epwalsh/rustbert/gpt2/model.ot"),
+                    Path::new("vocab.txt"),
+                    Path::new("merges.txt"),
+                    Path::new("config.json"),
+                    Path::new("model.ot"),
                     generate_config,
                     device,
                 ).unwrap();
-                info!("Model loaded");
+                info!("...model loaded");
                 model
             },
         };
