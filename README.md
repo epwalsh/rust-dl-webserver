@@ -1,6 +1,6 @@
 # rust-dl-webserver
 
-This project provides an example of a serving a deep learning model with batched prediction using Rust.
+This project provides an example of serving a deep learning model with batched prediction using Rust.
 In particular it runs a GPT2 model to generate text based on input context.
 
 ## Setup
@@ -14,9 +14,8 @@ python utils/download-dependencies_gpt2.py
 ```
 
 Also in order for the server to make use of your GPU (if you have one available) you'll need to compile it against the right
-version of the C++ library: LibTorch.
-
-You can download LibTorch from here: [https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). After downloading, unzip the file.
+version of the LibTorch C++ library, which you can download from
+[https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). After downloading, unzip the file.
 
 ## Running the server
 
