@@ -5,8 +5,11 @@ authors = ["epwalsh <epwalsh10@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-batched-fn = { version = "0.1.3", path = "../batched-fn" }
+batched-fn = { version = "0.1.4" }
 tokio = { version = "0.2.13", features = ["full"] }
+warp = { version = "0.2" }
 tch = { version = "0.1.6" }
-rust-bert = { version = "0.5.2" }
-exitfailure = { version = "0.5.1" }
+rust-bert = { version = "0.5.3" }
+env_logger = { version = "0.7.1" }
+log = { version = "0.4" }
+serde = "1.0"

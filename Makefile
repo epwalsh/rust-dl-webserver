@@ -33,6 +33,29 @@ test :
 doc :
 	cargo doc
 
+.PHONY : post
+post :
+	curl \
+		-d '{"text":"Hello, World!"}' \
+		-H "Content-Type: application/json" \
+		-X POST \
+		http://localhost:3030/generate &
+	curl \
+		-d '{"text":"Stay at home"}' \
+		-H "Content-Type: application/json" \
+		-X POST \
+		http://localhost:3030/generate &
+	curl \
+		-d '{"text":"Wash your hands"}' \
+		-H "Content-Type: application/json" \
+		-X POST \
+		http://localhost:3030/generate &
+	curl \
+		-d '{"text":"Do not touch your face"}' \
+		-H "Content-Type: application/json" \
+		-X POST \
+		http://localhost:3030/generate &
+
 #
 # Git helpers.
 #

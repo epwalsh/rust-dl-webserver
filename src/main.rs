@@ -1,86 +1,80 @@
 use batched_fn::batched_fn;
-use exitfailure::ExitFailure;
-use rust_bert::pipelines::generation::{GPT2Generator, LanguageGenerator};
+use env_logger::Env;
+use log::info;
+use rust_bert::pipelines::generation::{GPT2Generator, GenerateConfig, LanguageGenerator};
+use serde::{Deserialize, Serialize};
+use std::convert::Infallible;
 use std::path::Path;
 use tch::{Cuda, Device};
+use warp::Filter;
 
-async fn generate(context: String) -> String {
+#[derive(Debug, Deserialize, Serialize)]
+struct Context {
+    text: String,
+}
+
+async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
     let batched_generate = batched_fn! {
-        handler = |batch: Vec<String>, model: &GPT2Generator| -> Vec<String> {
+        handler = |batch: Vec<Context>, model: &GPT2Generator| -> Vec<String> {
+            info!("Running batch of size {}", batch.len());
             let output = model.generate(
-                Some(batch.iter().map(|c| &c[..]).collect()),
-                0,
-                30,
-                true,
-                false,
-                5,
-                1.2,
-                0,
-                0.9,
-                1.0,
-                1.0,
-                3,
-                1,
+                Some(batch.iter().map(|c| &c.text[..]).collect()),
                 None,
             );
-            println!("Processed batch of size {}", output.len());
             output
         };
         config = {
             max_batch_size: 4,
-            delay: 50,
+            delay: 100,
         };
         context = {
             model: {
+                info!("Loading model");
                 let device = Device::cuda_if_available();
-                GPT2Generator::new(
+                let generate_config = GenerateConfig {
+                    max_length: 30,
+                    do_sample: true,
+                    num_beams: 5,
+                    temperature: 1.1,
+                    num_return_sequences: 1,
+                    ..Default::default()
+                };
+                let model = GPT2Generator::new(
                     Path::new("/home/epwalsh/rustbert/gpt2/vocab.txt"),
                     Path::new("/home/epwalsh/rustbert/gpt2/merges.txt"),
                     Path::new("/home/epwalsh/rustbert/gpt2/config.json"),
                     Path::new("/home/epwalsh/rustbert/gpt2/model.ot"),
+                    generate_config,
                     device,
-                ).unwrap()
+                ).unwrap();
+                info!("Model loaded");
+                model
             },
         };
     };
-    batched_generate(context).await
+
+    info!("Received input context: {:?}", context);
+
+    let output = batched_generate(context).await;
+
+    info!("Generated output: '{}'", output);
+
+    Ok(output)
 }
 
 #[tokio::main]
-async fn main() -> Result<(), ExitFailure> {
-    println!("Cuda available? {}", Cuda::cudnn_is_available());
+async fn main() {
+    env_logger::from_env(Env::default().default_filter_or("info")).init();
 
-    let mut handles = vec![];
+    info!("Cuda available? {}", Cuda::cudnn_is_available());
 
-    handles.push(tokio::spawn(async move {
-        let output = generate("The dog".into()).await;
-        println!("--> {}", output);
-    }));
+    // POST /generate/ {"context":"Hello, World!"}
+    let routes = warp::post()
+        .and(warp::path("generate"))
+        // Only accept bodies smaller than 16kb.
+        .and(warp::body::content_length_limit(1024 * 16))
+        .and(warp::body::json())
+        .and_then(generate);
 
-    handles.push(tokio::spawn(async move {
-        let output = generate("The cat was".into()).await;
-        println!("--> {}", output);
-    }));
-
-    handles.push(tokio::spawn(async move {
-        let output = generate("Hello there".into()).await;
-        println!("--> {}", output);
-    }));
-
-    handles.push(tokio::spawn(async move {
-        let output = generate("Penguins tend to".into()).await;
-        println!("--> {}", output);
-    }));
-
-    handles.push(tokio::spawn(async move {
-        let output = generate("Does a bear shit in the woods?".into()).await;
-        println!("--> {}", output);
-    }));
-
-    // Wait for spawn tasks to finish.
-    for join_handle in handles {
-        join_handle.await?;
-    }
-
-    Ok(())
+    warp::serve(routes).run(([127, 0, 0, 1], 3030)).await;
 }
