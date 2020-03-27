@@ -17,11 +17,10 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
     let batched_generate = batched_fn! {
         handler = |batch: Vec<Context>, model: &GPT2Generator| -> Vec<String> {
             info!("Running batch of size {}", batch.len());
-            let output = model.generate(
+            model.generate(
                 Some(batch.iter().map(|c| &c.text[..]).collect()),
                 None,
-            );
-            output
+            )
         };
         config = {
             max_batch_size: 4,
