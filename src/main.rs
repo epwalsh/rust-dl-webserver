@@ -4,7 +4,6 @@ use log::info;
 use rust_bert::pipelines::generation::{GPT2Generator, GenerateConfig, LanguageGenerator};
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
-use std::path::Path;
 use tch::{Cuda, Device};
 use warp::Filter;
 
@@ -38,11 +37,12 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
                     num_return_sequences: 1,
                     ..Default::default()
                 };
+                let home = dirs::home_dir().unwrap();
                 let model = GPT2Generator::new(
-                    Path::new("vocab.txt"),
-                    Path::new("merges.txt"),
-                    Path::new("config.json"),
-                    Path::new("model.ot"),
+                    &home.join("rustbert/gpt2/vocab.txt"),
+                    &home.join("rustbert/gpt2/merges.txt"),
+                    &home.join("rustbert/gpt2/config.json"),
+                    &home.join("rustbert/gpt2/model.ot"),
                     generate_config,
                     device,
                 ).unwrap();

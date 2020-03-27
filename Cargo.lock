@@ -378,6 +378,7 @@ name = "dl-webserver"
 version = "0.1.0"
 dependencies = [
  "batched-fn",
+ "dirs",
  "env_logger",
  "log 0.4.8",
  "rust-bert",
