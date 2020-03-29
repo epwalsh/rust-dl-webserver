@@ -56,7 +56,7 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Infallible> {
 
     let output = batched_generate(context).await;
 
-    info!("Generated output: '{}'", output);
+    info!("Generated output: '{}'", output.replace('\n', " "));
 
     Ok(output)
 }

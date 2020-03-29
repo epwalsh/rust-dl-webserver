@@ -92,12 +92,13 @@ checksum = "7d5ca2cd0adc3f48f9e9ea5a6bbdf9ccc0bfade884847e484d452414c7ccffb3"
 
 [[package]]
 name = "batched-fn"
-version = "0.1.4"
+version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cad0683b57d8f750a35bbffe31e6cd7256bd84a13ce8213258cd08530ffbef56"
+checksum = "9c6727054399ae6e4d7cff067c49cb31282006701b8811513ccc7da77bf6571e"
 dependencies = [
+ "flume",
+ "futures",
  "once_cell",
- "tokio",
 ]
 
 [[package]]
@@ -451,6 +452,16 @@ dependencies = [
  "crc32fast",
  "libc",
  "miniz_oxide",
+]
+
+[[package]]
+name = "flume"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "855e285c3835897065a6ba6f9463b44553eb9f29c7988d692f3d41283b47388b"
+dependencies = [
+ "futures",
+ "spin",
 ]
 
 [[package]]
@@ -1487,9 +1498,9 @@ dependencies = [
 
 [[package]]
 name = "rust_tokenizers"
-version = "2.0.3"
+version = "2.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "708d471469d3f8b6479e72d85586b46ee73db7abec5b032fe46b888b424c3314"
+checksum = "3f2d795b374878864221f99cc7b0aa09efc79036d0c59d494e8cd47285b2beb0"
 dependencies = [
  "csv",
  "itertools 0.8.2",
@@ -1562,9 +1573,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.48"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9371ade75d4c2d6cb154141b9752cf3781ec9c05e0e5cf35060e1e70ee7b9c25"
+checksum = "78a7a12c167809363ec3bd7329fc0a3369056996de43c4b37ef3cd54a6ce4867"
 dependencies = [
  "itoa",
  "ryu",
@@ -1634,6 +1645,12 @@ dependencies = [
  "redox_syscall",
  "winapi 0.3.8",
 ]
+
+[[package]]
+name = "spin"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e63cff320ae2c57904679ba7cb63280a3dc4613885beafb148ee7bf9aa9042d"
 
 [[package]]
 name = "syn"
