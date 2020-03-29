@@ -45,3 +45,7 @@ curl -d '{"text":"Do not touch your face"}' \
     -X POST \
     http://localhost:3030/generate &
 ```
+
+The logs from the server should look something like this:
+
+![server output](img/server_output.png)
