@@ -25,7 +25,7 @@ Once you've downloaded the model files and LibTorch, clone this repo and run the
 make run LIBTORCH=/path/to/libtorch
 ```
 
-Now in a separate terminal you can send send several requests in to the server at once:
+Now in a separate terminal you can send several requests in to the server at once:
 
 ```bash
 curl -d '{"text":"Hello, World!"}' \
