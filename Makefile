@@ -39,25 +39,37 @@ doc :
 .PHONY : post
 post :
 	curl \
+		-v \
 		-d '{"text":"Hello, World!"}' \
 		-H "Content-Type: application/json" \
-		-X POST \
-		http://localhost:3030/generate &
+		http://localhost:3030/generate
+
+.PHONY : post-many
+post-many :
 	curl \
+		-s \
+		-S \
+		-d '{"text":"Hello, World!"}' \
+		-H "Content-Type: application/json" \
+		http://localhost:3030/generate > /dev/null &
+	curl \
+		-s \
+		-S \
 		-d '{"text":"Stay at home"}' \
 		-H "Content-Type: application/json" \
-		-X POST \
-		http://localhost:3030/generate &
+		http://localhost:3030/generate > /dev/null &
 	curl \
+		-s \
+		-S \
 		-d '{"text":"Wash your hands"}' \
 		-H "Content-Type: application/json" \
-		-X POST \
-		http://localhost:3030/generate &
+		http://localhost:3030/generate > /dev/null &
 	curl \
+		-s \
+		-S \
 		-d '{"text":"Do not touch your face"}' \
 		-H "Content-Type: application/json" \
-		-X POST \
-		http://localhost:3030/generate &
+		http://localhost:3030/generate > /dev/null &
 
 #
 # Git helpers.
