@@ -29,7 +29,7 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Rejection> {
             )
         };
         config = {
-            max_batch_size: 4,
+            max_batch_size: if Cuda::cudnn_is_available() { 4 } else { 1 },
             delay: 100,
             channel_cap: Some(20),
         };

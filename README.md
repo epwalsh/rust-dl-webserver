@@ -3,6 +3,11 @@
 This project provides an example of serving a deep learning model with batched prediction using Rust.
 In particular it runs a GPT2 model to generate text based on input context.
 
+## Features
+
+- Batched prediction when GPU is detected with tunable batch size, otherwise uses batch size of 1.
+- Back-pressure mechanism that will return a 503 status code if the GPU gets back-logged from too many requests.
+
 ## Setup
 
 You'll need to download the model files for GPT-2 through the [Rust Bert](https://github.com/guillaume-be/rust-bert) repository. This requires Python 3.
@@ -30,19 +35,15 @@ Now in a separate terminal you can send several requests in to the server at onc
 ```bash
 curl -d '{"text":"Hello, World!"}' \
     -H "Content-Type: application/json" \
-    -X POST \
     http://localhost:3030/generate &
 curl -d '{"text":"Stay at home"}' \
     -H "Content-Type: application/json" \
-    -X POST \
     http://localhost:3030/generate &
 curl -d '{"text":"Wash your hands"}' \
     -H "Content-Type: application/json" \
-    -X POST \
     http://localhost:3030/generate &
 curl -d '{"text":"Do not touch your face"}' \
     -H "Content-Type: application/json" \
-    -X POST \
     http://localhost:3030/generate &
 ```
 
