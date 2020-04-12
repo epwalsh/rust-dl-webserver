@@ -2,14 +2,24 @@
 # Cargo helpers.
 #
 
-LIBTORCH=$(shell realpath ~/torch/libtorch)
-LD_LIBRARY_PATH=$(LIBTORCH)/lib
+LIBTORCH=~/torch/libtorch
+
 
 .PHONY : run
+
+ifneq ($(wildcard $(LIBTORCH)),)
+LIBTORCH_PATH=$(shell realpath $(LIBTORCH))
+LD_LIBRARY_PATH=$(LIBTORCH_PATH)/lib
+
 run :
 	LIBTORCH=$(LIBTORCH) \
 		LD_LIBRARY_PATH=$(LD_LIBRARY_PATH) \
 		cargo run
+else
+run :
+	@echo "No LIBTORCH found, GPU won't be available"
+	cargo run
+endif
 
 .PHONY : build
 build :
