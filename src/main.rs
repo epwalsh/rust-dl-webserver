@@ -43,17 +43,10 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Rejection> {
                     num_beams: 5,
                     temperature: 1.1,
                     num_return_sequences: 1,
+                    device,
                     ..Default::default()
                 };
-                let home = dirs::home_dir().unwrap();
-                let model = GPT2Generator::new(
-                    &home.join("rustbert/gpt2/vocab.txt"),
-                    &home.join("rustbert/gpt2/merges.txt"),
-                    &home.join("rustbert/gpt2/config.json"),
-                    &home.join("rustbert/gpt2/model.ot"),
-                    generate_config,
-                    device,
-                ).unwrap();
+                let model = GPT2Generator::new(generate_config).unwrap();
                 info!("...model loaded");
                 model
             },
