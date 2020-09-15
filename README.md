@@ -5,7 +5,7 @@ In particular it runs a GPT2 model to generate text based on input context.
 
 ## Features
 
-- Batched prediction when GPU is detected with tunable batch size, otherwise uses batch size of 1.
+- Batched prediction using [`batched-fn`](https://github.com/epwalsh/batched-fn) when GPU is detected.
 - Back pressure mechanism that will return a 503 status code if the server gets back-logged with too many requests.
 
 ## Setup
