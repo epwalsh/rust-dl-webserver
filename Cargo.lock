@@ -382,16 +382,6 @@ dependencies = [
 
 [[package]]
 name = "dirs"
-version = "2.0.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "13aea89a5c93364a98e9b37b2fa237effbb694d5cfe01c5b70941f7eb087d5e3"
-dependencies = [
- "cfg-if",
- "dirs-sys",
-]
-
-[[package]]
-name = "dirs"
 version = "3.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "142995ed02755914747cc6ca76fc7e4583cd18578746716d0508ea6ed558b9ff"
@@ -415,7 +405,7 @@ name = "dl-webserver"
 version = "0.1.0"
 dependencies = [
  "batched-fn",
- "dirs 2.0.2",
+ "dirs",
  "env_logger",
  "log 0.4.8",
  "rust-bert",
@@ -1658,7 +1648,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed76f18c84a4d82b43a21f59daadee4e7040753a0b3c0006c7505f830afcc3ee"
 dependencies = [
  "csv",
- "dirs 3.0.1",
+ "dirs",
  "failure",
  "itertools 0.9.0",
  "lazy_static",
