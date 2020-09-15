@@ -15,7 +15,7 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Install Rust Stable
       uses: actions-rs/toolchain@v1
@@ -25,13 +25,13 @@ jobs:
         override: true
 
     - name: Cache Cargo Registry
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: ~/.cargo/registry
         key: ${{ runner.os }}-cargo-test-registry-${{ hashFiles('**/Cargo.lock') }}
 
     - name: Cache Cargo Build
-      uses: actions/cache@v1
+      uses: actions/cache@v2
       with:
         path: target
         key: ${{ runner.os }}-cargo-test-build-${{ hashFiles('**/Cargo.lock') }}
