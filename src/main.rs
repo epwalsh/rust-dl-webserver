@@ -105,7 +105,7 @@ async fn handle_rejection(err: Rejection) -> Result<impl warp::Reply, Infallible
 
 #[tokio::main]
 async fn main() {
-    env_logger::from_env(Env::default().default_filter_or("info")).init();
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
 
     info!("Cuda available? {}", Cuda::cudnn_is_available());
 
