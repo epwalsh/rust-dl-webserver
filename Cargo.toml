@@ -10,7 +10,7 @@ tokio = { version = "0.3", features = ["full"] }
 warp = "0.2.5"
 tch = "0.1.6"
 rust-bert = "0.7.11"
-env_logger = "0.8.1"
+env_logger = "0.8.2"
 log = "0.4"
 serde = "1.0"
 dirs = "3.0"
