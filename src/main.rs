@@ -1,11 +1,11 @@
 use batched_fn::batched_fn;
 use env_logger::Env;
 use log::{error, info};
+use rust_bert::pipelines::text_generation::{TextGenerationConfig, TextGenerationModel};
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
 use tch::{Cuda, Device};
 use warp::{http::StatusCode, reject::Reject, Filter, Rejection};
-use rust_bert::pipelines::text_generation::{TextGenerationModel, TextGenerationConfig};
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Context {
