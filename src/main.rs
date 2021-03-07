@@ -1,11 +1,11 @@
 use batched_fn::batched_fn;
 use env_logger::Env;
 use log::{error, info};
-use rust_bert::pipelines::generation::{GPT2Generator, GenerateConfig, LanguageGenerator};
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
 use tch::{Cuda, Device};
 use warp::{http::StatusCode, reject::Reject, Filter, Rejection};
+use rust_bert::pipelines::text_generation::{TextGenerationModel, TextGenerationConfig};
 
 #[derive(Debug, Deserialize, Serialize)]
 struct Context {
@@ -21,10 +21,10 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Rejection> {
     // NOTE: this is only more efficient if you have a GPU. If serving the model
     // on CPU this just adds overhead.
     let batched_generate = batched_fn! {
-        handler = |batch: Vec<Context>, model: &GPT2Generator| -> Vec<String> {
+        handler = |batch: Vec<Context>, model: &TextGenerationModel| -> Vec<String> {
             info!("Running batch of size {}", batch.len());
             model.generate(
-                Some(batch.iter().map(|c| &c.text[..]).collect()),
+                batch.iter().map(|c| &c.text[..]).collect::<Vec<&str>>(),
                 None,
             )
         };
@@ -37,7 +37,7 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Rejection> {
             model: {
                 info!("Loading model...");
                 let device = Device::cuda_if_available();
-                let generate_config = GenerateConfig {
+                let generate_config = TextGenerationConfig {
                     max_length: 30,
                     do_sample: true,
                     num_beams: 5,
@@ -46,7 +46,7 @@ async fn generate(context: Context) -> Result<impl warp::Reply, Rejection> {
                     device,
                     ..Default::default()
                 };
-                let model = GPT2Generator::new(generate_config).unwrap();
+                let model = TextGenerationModel::new(generate_config).unwrap();
                 info!("...model loaded");
                 model
             },
