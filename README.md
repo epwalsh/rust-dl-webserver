@@ -1,33 +1,29 @@
 # rust-dl-webserver
 
 This project provides an example of serving a deep learning model with batched prediction using Rust.
-In particular it runs a GPT2 model to generate text based on input context.
+In particular it runs a GPT2 model from [rust-bert](https://github.com/guillaume-be/rust-bert) to generate text based on input context.
 
 ## Features
 
 - Batched prediction using [`batched-fn`](https://github.com/epwalsh/batched-fn) when GPU is detected.
 - Back pressure mechanism that will return a 503 status code if the server gets back-logged with too many requests.
 
-## Setup
-
-You'll need to download the model files for GPT-2 through the [Rust Bert](https://github.com/guillaume-be/rust-bert) repository. This requires Python 3.
-
-```bash
-git clone https://github.com/guillaume-be/rust-bert && cd rust-bert
-pip install -r requirements.txt
-python utils/download-dependencies_gpt2.py
-```
-
-Also in order for the server to make use of your GPU (if you have one available) you'll need to compile it against the right
-version of the LibTorch C++ library, which you can download from
-[https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/). After downloading, unzip the file.
-
 ## Running the server
 
-Once you've downloaded the model files and LibTorch, clone this repo and run the server with:
+In order for the server to make use of your GPU (if you have one available) you'll need to compile it against the right
+version of the LibTorch C++ library, which you can download from
+[https://pytorch.org/get-started/locally/](https://pytorch.org/get-started/locally/).
+
+After downloading, unzip the file and then run the server with
 
 ```bash
 make run LIBTORCH=/path/to/libtorch
+```
+
+If you don't have a GPU available, just run
+
+```bash
+make run
 ```
 
 Now in a separate terminal you can send several requests in to the server at once:
