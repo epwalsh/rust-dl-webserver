@@ -349,6 +349,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "dirs"
+version = "4.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ca3aa72a6f96ea37bbc5aa912f6788242832f75369bdfdadcb0e38423f100059"
+dependencies = [
+ "dirs-sys",
+]
+
+[[package]]
 name = "dirs-sys"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -364,7 +373,7 @@ name = "dl-webserver"
 version = "0.1.0"
 dependencies = [
  "batched-fn",
- "dirs",
+ "dirs 4.0.0",
  "env_logger",
  "log",
  "rust-bert",
@@ -1424,7 +1433,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f476f93bfaacec20881a3a4c52a798d12ff1355157afc423f5337a2fa86217f4"
 dependencies = [
  "cached-path",
- "dirs",
+ "dirs 3.0.2",
  "itertools 0.10.0",
  "lazy_static",
  "ordered-float",
