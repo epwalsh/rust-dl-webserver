@@ -54,9 +54,9 @@ checksum = "904dfeac50f3cdaba28fc6f57fdcddb75f49ed61346676a78c4ffe55877802fd"
 
 [[package]]
 name = "batched-fn"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "90ed49f8d4f23c21f4c0eacaa06470ba2cb3be8edcf57082472b8ad5c9332b17"
+checksum = "fddf777dcbb37ce53cd85bc12e595432912d3daa92ea8b255a083bf91a34a02b"
 dependencies = [
  "flume",
  "futures",
